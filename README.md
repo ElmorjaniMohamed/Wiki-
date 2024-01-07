@@ -30,4 +30,4 @@ WikiGenius is the ultimate platform for effortless wiki management and collabora
 3. Run the SQL script in `database.sql` to set up the database.
 4. Launch the application and start creating, discovering, and sharing knowledge effortlessly!
 
-Join WikiCraft and revolutionize your knowledge-sharing experience!
+Join WikiGenius and revolutionize your knowledge-sharing experience!
