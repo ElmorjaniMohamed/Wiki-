@@ -11,13 +11,13 @@ class Controller
         include VIEWS . $view . '.php';
     }
 
-    protected function view(string $path, array $params = null)
+    protected function view(string $path, array $params = null , $layout= 'main')
     {
         ob_start();
         $path = str_replace('.', DIRECTORY_SEPARATOR, $path);
         require VIEWS . $path . '.php';
         $content = ob_get_clean();
-        require VIEWS . 'layout/main.php';
+        require VIEWS . 'layout/'.$layout.'.php';
     }
 
 }

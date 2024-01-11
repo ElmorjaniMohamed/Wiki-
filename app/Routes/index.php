@@ -29,7 +29,7 @@ $router->get('/WikiGenius/signup', SignUpController::class, 'index');
 // Contact page
 $router->get('/WikiGenius/contact', ContactController::class, 'index');
 
-$router->post('/register/auth', AuthController::class, 'register');
-$router->post('/login/auth', AuthController::class, 'login');
+$router->post('/WikiGenius/auth/register', AuthController::class, 'register');
+$router->post('/WikiGenius/auth/login', AuthController::class, 'login');
 
 $router->dispatch();

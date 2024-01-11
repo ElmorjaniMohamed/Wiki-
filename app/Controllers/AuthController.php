@@ -15,7 +15,7 @@ class AuthController extends Controller
 
             
             $image = $_FILES['image'];
-            $uploadDir = 'public/assets/uploads/'; // Assurez-vous que ce dossier existe sur votre serveur
+            $uploadDir = 'assets/uploads/'; 
             $uploadPath = $uploadDir . basename($image['name']);
             move_uploaded_file($image['tmp_name'], $uploadPath);
 
@@ -27,7 +27,7 @@ class AuthController extends Controller
             $user->setImage($uploadPath); 
 
             if ($user->registerAuthor()) {
-                header('Location: /login'); 
+                header('Location: ../login'); 
                 exit();
             } else {
                 echo "Erreur lors de l'enregistrement.";

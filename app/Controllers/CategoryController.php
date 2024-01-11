@@ -18,9 +18,9 @@ class CategoryController extends Controller
         $categories = $this->categoryModel->getAllCategories();
 
         // Afficher la vue avec les catégories
-        $this->view('category.index', ['categories' => $categories]);
-    }
+        $this->view('admin.Categories',['categories' => $categories],'dashboard');
 
+    }
     public function create()
     {
         // Afficher le formulaire de création de catégorie

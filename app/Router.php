@@ -5,7 +5,6 @@ class Router
 {
     protected $routes = [];
     
-
     private function addRoute($route, $controller, $action, $method)
     {
 
@@ -22,6 +21,13 @@ class Router
         $this->addRoute($route, $controller, $action, "POST");
     }
 
+    public function abort($code = 404)
+    {
+        http_response_code($code);
+        require "../Views/error/404.php";
+        die();
+    }
+
     public function dispatch()
     {
         $uri = strtok($_SERVER['REQUEST_URI'], '?');
@@ -34,7 +40,7 @@ class Router
             $controller = new $controller();
             $controller->$action();
         } else {
-            throw new \Exception("No route found for URI: $uri");
+            $this->abort();
         }
     }
 }

@@ -16,7 +16,7 @@
                             </a>
                             <p class="text-center">Unlock WikiGenius. Smarter insights await!</p>
 
-                            <form id="loginForm" onsubmit="return validateForm()">
+                            <form id="loginForm" onsubmit="return validateForm()" action='auth/login' method="post">
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label">Username<span
                                             style="color: red">*</span></label>
