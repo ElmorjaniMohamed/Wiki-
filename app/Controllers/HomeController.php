@@ -8,7 +8,7 @@ class HomeController extends Controller{
     
     public function index(){
 
-        $this->view('wiki-detail',[],'main');
+        $this->view('home');
 
     }
 

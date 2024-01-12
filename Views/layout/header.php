@@ -25,6 +25,10 @@
 
     <!-- Flaticon Font -->
     <link href="<?= APP_URL ?>public/assets/lib/flaticon/font/flaticon.css" rel="stylesheet" />
+    <link
+      href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
 
     <!-- Libraries Stylesheet -->
     <link href="<?= APP_URL ?>public/assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
@@ -69,6 +73,55 @@
           </div>
           <a href="<?= APP_URL ?>login" class="btn btn-primary px-4 mr-3">Log in</a>
           <a href="<?= APP_URL ?>signup" class="btn btn-primary px-4">Sign up</a>
+
+          <li class="nav-item dropdown pe-3 list-inline">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="<?= APP_URL ?>public/assets/img/testimonial-2.jpg" alt="Profile" class="rounded-circle" style="width: 3rem">
+            <span class="d-none d-md-block dropdown-toggle ps-2 fw-bold ml-2" style="font-weight: 700;">K. Anderson</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header text-center">
+              <h6>Mohamed El Morjani</h6>
+              <span>info@gmail.com</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                <i class="bi bi-question-circle"></i>
+                <span>Need Help?</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+          </li><!-- End Profile Nav -->
         </div>
       </nav>
     </div>

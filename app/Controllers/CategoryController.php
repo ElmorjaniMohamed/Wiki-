@@ -14,61 +14,84 @@ class CategoryController extends Controller
 
     public function index()
     {
-        // Récupérer toutes les catégories depuis le modèle
         $categories = $this->categoryModel->getAllCategories();
-
-        // Afficher la vue avec les catégories
-        $this->view('admin.Categories',['categories' => $categories],'dashboard');
-
+        $this->view('admin.Categories', $categories, 'dashboard');
     }
+
     public function create()
     {
-        // Afficher le formulaire de création de catégorie
         $this->view('category.create');
     }
 
     public function store()
     {
-        // Récupérer les données du formulaire
-        $categoryName = $_POST['category_name'];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $categoryName = htmlspecialchars($_POST['category_name'], ENT_QUOTES, 'UTF-8');
 
-        // Enregistrer la nouvelle catégorie
-        $this->categoryModel->createCategory($categoryName);
+            if (empty($categoryName)) {
+                $this->setFlashMessage('Category name cannot be empty.', 'danger');
+            } else {
+                $this->categoryModel->createCategory($categoryName);
+                $this->setFlashMessage('Category created successfully.', 'success');
+            }
 
-        // Rediriger vers la liste des catégories
-        header('Location: /WikiGenius/category');
-        exit();
+            header('Location:' . APP_URL . 'admin/Categories');
+            exit();
+        } else {
+            $this->setFlashMessage('Invalid request type.', 'danger');
+            $this->view('category.create');
+        }
     }
+
 
     public function edit($categoryId)
     {
-        // Récupérer les informations de la catégorie à éditer
         $category = $this->categoryModel->getCategoryById($categoryId);
-
-        // Afficher le formulaire d'édition de catégorie
         $this->view('category.edit', ['category' => $category]);
     }
 
-    public function update($categoryId)
+    public function update()
     {
-        // Récupérer les données du formulaire
-        $categoryName = $_POST['category_name'];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
+            $categoryId = htmlspecialchars($_POST['id'], ENT_QUOTES, 'UTF-8');
+            $categoryName = htmlspecialchars($_POST['category_name'], ENT_QUOTES, 'UTF-8');
+    
+            if (empty($categoryName)) {
+                $this->setFlashMessage('Category name cannot be empty.', 'danger');
+                header('Location: ' . APP_URL . 'admin/Categories');
+                exit();
+            }
+    
+            $this->categoryModel->updateCategory($categoryId, $categoryName);
+            header('Location: ' . APP_URL . 'admin/Categories');
+            exit();
+        } else {
+            $this->setFlashMessage('Invalid request type.', 'danger');
+           
+            $categoryId = htmlspecialchars($_POST['id'], ENT_QUOTES, 'UTF-8');
+            $this->view('category.edit', ['category' => $this->categoryModel->getCategoryById($categoryId)]);
+        }
+    }
+    
 
-        // Mettre à jour la catégorie
-        $this->categoryModel->updateCategory($categoryId, $categoryName);
-
-        // Rediriger vers la liste des catégories
-        header('Location: /WikiGenius/category');
-        exit();
+    public function destroy()
+    {
+        if (isset($_GET['id'])) {
+            $categoryId = $_GET['id'];
+            $this->categoryModel->deleteCategory($categoryId);
+            header('Location: ' . APP_URL . 'admin/Categories');
+            exit();
+        } else {
+            echo "Invalid request. Missing 'id' parameter.";
+            exit();
+        }
     }
 
-    public function destroy($categoryId)
-    {
-        // Supprimer la catégorie
-        $this->categoryModel->deleteCategory($categoryId);
 
-        // Rediriger vers la liste des catégories
-        header('Location: /WikiGenius/category');
-        exit();
+    private function setFlashMessage($message, $type)
+    {
+        $_SESSION['flash_message'] = $message;
+        $_SESSION['flash_type'] = $type;
     }
 }

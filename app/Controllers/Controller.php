@@ -11,7 +11,7 @@ class Controller
         include VIEWS . $view . '.php';
     }
 
-    protected function view(string $path, array $params = null , $layout= 'main')
+    protected function view(string $path, array $data = [] , $layout= 'main' )
     {
         ob_start();
         $path = str_replace('.', DIRECTORY_SEPARATOR, $path);

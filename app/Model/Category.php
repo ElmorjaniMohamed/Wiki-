@@ -1,13 +1,9 @@
 <?php
 
 namespace App\Model;
-use Database\Connection;
-
-use PDO;
 
 class Category extends Model
 {
-
     public function getAllCategories()
     {
         return $this->selectRecords('category');
@@ -21,7 +17,8 @@ class Category extends Model
     public function createCategory($categoryName)
     {
         $data = [
-            'category' => $categoryName,
+            'name' => $categoryName,
+            'create_date' => date('Y-m-d H:i:s'), 
         ];
 
         return $this->insertRecord('category', $data);
@@ -30,7 +27,8 @@ class Category extends Model
     public function updateCategory($categoryId, $categoryName)
     {
         $data = [
-            'category' => $categoryName,
+            'name' => $categoryName,
+            'update_date' => date('Y-m-d H:i:s'),
         ];
 
         return $this->updateRecord('category', $data, $categoryId);

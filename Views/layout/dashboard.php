@@ -75,21 +75,9 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
               <hr class="dropdown-divider">
             </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
+            
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -131,19 +119,19 @@
         </a>
       </li><!-- End Dashboard Nav -->
       <li class="nav-item">
-        <a class="nav-link " href="wikis.html">
+        <a class="nav-link " href="<?= APP_URL ?>admin/Wikis">
           <i class="bi bi-journal-richtext"></i>
           <span>Wikis</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link " href="categories.html">
+        <a class="nav-link " href="<?= APP_URL ?>admin/Categories">
           <i class="bi bi-bookmark"></i>
           <span>Categories</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link " href="tags.html">
+        <a class="nav-link " href="<?= APP_URL ?>admin/Tags">
           <i class="bi bi-tags"></i>
           <span>Tags</span>
         </a>

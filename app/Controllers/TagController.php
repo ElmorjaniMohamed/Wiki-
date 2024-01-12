@@ -15,61 +15,82 @@ class TagController extends Controller
 
     public function index()
     {
-        // Récupérer tous les tags depuis le modèle
         $tags = $this->tagModel->getAllTags();
-
-        // Afficher la vue avec les tags
-        $this->view('tag.index', ['tags' => $tags]);
+        $this->view('admin.Tags', $tags, 'dashboard');
     }
 
     public function create()
     {
-        // Afficher le formulaire de création de tag
         $this->view('tag.create');
     }
 
     public function store()
     {
-        // Récupérer les données du formulaire
-        $tagName = $_POST['tag_name'];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $tagName = htmlspecialchars($_POST['tag_name'], ENT_QUOTES, 'UTF-8');
 
-        // Enregistrer le nouveau tag
-        $this->tagModel->createTag($tagName);
+            if (empty($tagName)) {
+                $this->setFlashMessage('Tag name cannot be empty.', 'danger');
+                header('Location:'.APP_URL.'admin/Tags');
+                exit();
+            }
 
-        // Rediriger vers la liste des tags
-        header('Location: /WikiGenius/tag');
-        exit();
+            $this->tagModel->createTag($tagName);
+            $this->setFlashMessage('Tag created successfully.', 'success');
+            header('Location: '.APP_URL.'admin/Tags');
+            exit();
+        } else {
+            $this->setFlashMessage('Invalid request type.', 'danger');
+            $this->view('tag.create');
+        }
     }
 
     public function edit($tagId)
     {
-        // Récupérer les informations du tag à éditer
         $tag = $this->tagModel->getTagById($tagId);
-
-        // Afficher le formulaire d'édition de tag
         $this->view('tag.edit', ['tag' => $tag]);
     }
 
-    public function update($tagId)
+    public function update()
     {
-        // Récupérer les données du formulaire
-        $tagName = $_POST['tag_name'];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        // Mettre à jour le tag
-        $this->tagModel->updateTag($tagId, $tagName);
+            $tagId = htmlspecialchars($_POST['id'], ENT_QUOTES, 'UTF-8');
+            $tagName = htmlspecialchars($_POST['tag_name'], ENT_QUOTES, 'UTF-8');
 
-        // Rediriger vers la liste des tags
-        header('Location: /WikiGenius/tag');
-        exit();
+            if (empty($tagName)) {
+                $this->setFlashMessage('Tag name cannot be empty.', 'danger');
+                header('Location: '.APP_URL.'admin/Tags');
+                exit();
+            }
+
+            $this->tagModel->updateTag($tagId, $tagName);
+            $this->setFlashMessage('Tag updated successfully.', 'success');
+            header('Location: '.APP_URL.'admin/Tags');
+            exit();
+        } else {
+            $this->setFlashMessage('Invalid request type.', 'danger');
+            $tagId = htmlspecialchars($_POST['id'], ENT_QUOTES, 'UTF-8');
+            $this->view('tag.edit', ['tag' => $this->tagModel->getTagById($tagId)]);
+        }
     }
 
-    public function destroy($tagId)
+    public function destroy()
     {
-        // Supprimer le tag
-        $this->tagModel->deleteTag($tagId);
+        if (isset($_GET['id'])) {
+            $tagId = $_GET['id'];
+            $this->tagModel->deleteTag($tagId);
+            header('Location: ' . APP_URL . 'admin/Tags');
+            exit();
+        } else {
+            echo "Invalid request. Missing 'id' parameter.";
+            exit();
+        }
+    }
 
-        // Rediriger vers la liste des tags
-        header('Location: /WikiGenius/tag');
-        exit();
+    private function setFlashMessage($message, $type)
+    {
+        $_SESSION['flash_message'] = $message;
+        $_SESSION['flash_type'] = $type;
     }
 }

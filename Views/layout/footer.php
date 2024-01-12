@@ -144,12 +144,11 @@
     <script src="<?= APP_URL ?>public/assets/lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="<?= APP_URL ?>public/assets/lib/isotope/isotope.pkgd.min.js"></script>
     <script src="<?= APP_URL ?>public/assets/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="<?= APP_URL ?>public/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= APP_URL ?>public/assets/js/dashboard.js"></script>
+    
+    
 
-    <!-- Contact Javascript File -->
-    <script src="<?= APP_URL ?>public/assets/js/mail/jqBootstrapValidation.min.js"></script>
-    <script src="<?= APP_URL ?>public/assets/js/mail/contact.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="<?= APP_URL ?>public/assets/js/main.js"></script>
+    
   </body>
 </html>

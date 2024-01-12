@@ -73,6 +73,25 @@ class User extends Model
         }
     }
 
+    public function getUserRole($userId)
+    {
+        try {
+            $sql = "SELECT role_id FROM user WHERE id = ?";
+            $this->logQuery($sql);
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(1, $userId);
+
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_OBJ);
+
+            return $result ? $result->role_id : null;
+        } catch (PDOException $e) {
+            $this->logError($e);
+            return null;
+        }
+    }
+
     public function login($email, $password)
     {
         try {

@@ -1,10 +1,6 @@
 <?php
 
 namespace App\Model;
-use Database\Connection;
-
-use PDO;
-use PDOException;
 
 class Tag extends Model
 {
@@ -15,15 +11,14 @@ class Tag extends Model
 
     public function getTagById($tagId)
     {
-        $tags = $this->selectRecords('tag', '*', "id = $tagId");
-
-        return (!empty($tags)) ? $tags[0] : null;
+        return $this->selectRecords('tag', '*', "id = $tagId")[0] ?? null;
     }
 
     public function createTag($tagName)
     {
         $data = [
-            'tag' => $tagName,
+            'name' => $tagName,
+            'create_date' => date('Y-m-d H:i:s'),
         ];
 
         return $this->insertRecord('tag', $data);
@@ -32,7 +27,8 @@ class Tag extends Model
     public function updateTag($tagId, $tagName)
     {
         $data = [
-            'tag' => $tagName,
+            'name' => $tagName,
+            'update_date' => date('Y-m-d H:i:s'),
         ];
 
         return $this->updateRecord('tag', $data, $tagId);
