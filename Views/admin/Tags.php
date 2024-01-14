@@ -30,7 +30,7 @@ endif;
                 <div class="card-body">
                     <h5 class="card-title">Tags</h5>
 
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTagModal"
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#addTagModal"
                         class="btn btn-primary mb-3"><i class="bi bi-plus-circle"></i>
                         Add Tag</button>
                     <div class="modal fade" id="addTagModal" tabindex="-1">
@@ -90,11 +90,11 @@ endif;
                                     <td>
                                         <a href="<?= APP_URL ?>Tag/destroy?id=<?= $row->id ?>"><span><i class="bi bi-trash"
                                                     style="color: red;"></i></span></a>
-                                        <a href="" data-bs-toggle="modal" data-bs-target="#tagEdit"><span><i
+                                        <a href="" data-bs-toggle="modal" data-bs-target="#tagEdit<?= $row->id ?>"><span><i
                                                     class="bi bi-pencil-square" style="margin-left: 0.7rem;"></i></span></a>
                                     </td>
                                 </tr>
-                                <div class="modal fade" id="tagEdit" tabindex="-1">
+                                <div class="modal fade" id="tagEdit<?= $row->id ?>" tabindex="-1">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">

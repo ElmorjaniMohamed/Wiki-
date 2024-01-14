@@ -62,8 +62,6 @@ endif;
                         </div>
                     </div>
 
-
-
                     <!-- Table with stripped rows -->
                     <table class="table datatable">
                         <thead>
@@ -93,12 +91,12 @@ endif;
                                     <td>
                                         <a href="<?= APP_URL ?>Category/destroy?id=<?= $row->id ?>"><span><i class="bi bi-trash"
                                                     style="color: red"></i></span></a>
-                                        <a href="" data-bs-toggle="modal" data-bs-target="#categoryEdit"><span><i
+                                        <a href="" data-bs-toggle="modal" data-bs-target="#categoryEdit<?= $row->id ?>"><span><i
                                                     class="bi bi-pencil-square" style="margin-left: 0.7rem"></i></span></a>
                                     </td>
                                 </tr>
                                 <!-- Edit Category Modal -->
-                                <div class="modal fade" id="categoryEdit" tabindex="-1">
+                                <div class="modal fade" id="categoryEdit<?= $row->id ?>" tabindex="-1">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">

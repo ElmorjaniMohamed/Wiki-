@@ -16,7 +16,7 @@ class Model
         $this->db = Connection::getInstance();
         $this->pdo = $this->db->getPDO();
     }
-    public function selectRecords(string $table, string $columns = "*", string $where = null,string $join = null)
+    public function selectRecords(string $table, string $columns = "*", string $where = null, string $join = null)
     {
         try {
             // Use prepared statements to prevent SQL injection
@@ -132,16 +132,53 @@ class Model
         }
     }
 
-    protected function logError(PDOException $e)
+    public function deleteRecordByConditions(string $table, array $conditions)
     {
-        $logFilePath = dirname(__DIR__ . '../') . '\logs\error.log';
+        try {
+            // Use prepared statements to prevent SQL injection
+            $sql = "DELETE FROM $table WHERE ";
+            $conditionsArray = [];
+
+            foreach ($conditions as $column => $value) {
+                $conditionsArray[] = "$column = ?";
+            }
+
+            $sql .= implode(' AND ', $conditionsArray);
+
+            $this->logQuery($sql);
+            $stmt = $this->pdo->prepare($sql);
+
+            // Bind parameters to the prepared statement
+            $i = 1;
+            foreach ($conditions as $value) {
+                $stmt->bindParam($i, $value);
+                $i++;
+            }
+
+            // Execute the prepared statement
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            $this->logError($e);
+            return false;
+        }
+    }
+
+    function lastId(){
+        return $this->pdo->query("SELECT LAST_INSERT_ID() AS id")->fetch(PDO::FETCH_OBJ)->id;
+     }
+
+
+     protected function logError(PDOException $e)
+    {
+        $logFilePath = dirname(__DIR__) . '/logs/error.log'; 
         $errorMessage = "[" . date('Y-m-d H:i:s') . "] " . $e->getMessage() . "\n";
         file_put_contents($logFilePath, $errorMessage, FILE_APPEND);
     }
 
     protected function logQuery($query)
     {
-        $logFilePath = dirname(__DIR__ . '../') . '\logs\query.log';
+        $logFilePath = dirname(__DIR__) . '/logs/query.log';
 
         $logMessage = "[" . date('Y-m-d H:i:s') . "] " . $query . "\n";
         file_put_contents($logFilePath, $logMessage, FILE_APPEND);

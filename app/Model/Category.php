@@ -6,12 +6,12 @@ class Category extends Model
 {
     public function getAllCategories()
     {
-        return $this->selectRecords('category');
+        return $this->selectRecords('categories');
     }
 
     public function getCategoryById($categoryId)
     {
-        return $this->selectRecords('category', '*', "id = $categoryId")[0] ?? null;
+        return $this->selectRecords('categories', '*', "id = $categoryId")[0] ?? null;
     }
 
     public function createCategory($categoryName)
@@ -21,7 +21,7 @@ class Category extends Model
             'create_date' => date('Y-m-d H:i:s'), 
         ];
 
-        return $this->insertRecord('category', $data);
+        return $this->insertRecord('categories', $data);
     }
 
     public function updateCategory($categoryId, $categoryName)
@@ -31,11 +31,11 @@ class Category extends Model
             'update_date' => date('Y-m-d H:i:s'),
         ];
 
-        return $this->updateRecord('category', $data, $categoryId);
+        return $this->updateRecord('categories', $data, $categoryId);
     }
 
     public function deleteCategory($categoryId)
     {
-        return $this->deleteRecord('category', $categoryId);
+        return $this->deleteRecord('categories', $categoryId);
     }
 }

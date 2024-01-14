@@ -6,12 +6,12 @@ class Tag extends Model
 {
     public function getAllTags()
     {
-        return $this->selectRecords('tag');
+        return $this->selectRecords('tags');
     }
 
     public function getTagById($tagId)
     {
-        return $this->selectRecords('tag', '*', "id = $tagId")[0] ?? null;
+        return $this->selectRecords('tags', '*', "id = $tagId")[0] ?? null;
     }
 
     public function createTag($tagName)
@@ -21,7 +21,11 @@ class Tag extends Model
             'create_date' => date('Y-m-d H:i:s'),
         ];
 
-        return $this->insertRecord('tag', $data);
+        return $this->insertRecord('tags', $data);
+    }
+    public function createTagwiki($data)
+    {
+        return $this->insertRecord('tag_wikis', $data);
     }
 
     public function updateTag($tagId, $tagName)
@@ -31,11 +35,11 @@ class Tag extends Model
             'update_date' => date('Y-m-d H:i:s'),
         ];
 
-        return $this->updateRecord('tag', $data, $tagId);
+        return $this->updateRecord('tags', $data, $tagId);
     }
 
     public function deleteTag($tagId)
     {
-        return $this->deleteRecord('tag', $tagId);
+        return $this->deleteRecord('tags', $tagId);
     }
 }

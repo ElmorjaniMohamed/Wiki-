@@ -5,7 +5,7 @@
       <div class="row pt-5">
         <div class="col-lg-3 col-md-6 mb-5">
           <a
-            href=""
+            href="<?=APP_URL?>"
             class="navbar-brand font-weight-bold text-primary m-0 mb-4 p-0"
             style="font-size: 40px; line-height: 40px"
           >
@@ -138,6 +138,7 @@
     ></a>
 
     <!-- JavaScript Libraries -->
+    
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="<?= APP_URL ?>public/assets/lib/easing/easing.min.js"></script>

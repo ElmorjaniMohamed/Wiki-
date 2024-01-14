@@ -9,10 +9,17 @@ class AuthController extends Controller
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            
             $username = $_POST['username'];
             $email = $_POST['email'];
             $password = $_POST['password'];
+
+            // Check if the user already exists
+            $userModel = new User();
+            if ($userModel->userExists($username, $email)) {
+                $this->setFlashMessage('User already exists.', 'danger');
+                header('Location: ' . APP_URL . 'signup');
+                exit();
+            }
 
             $image = $_FILES['image'];
             $uploadDir = 'assets/uploads/';
@@ -27,7 +34,14 @@ class AuthController extends Controller
             $user->setImage($uploadPath);
 
             if ($user->registerAuthor()) {
-                header('Location: ' . APP_URL);
+                $_SESSION['user'] = (object) [
+                    'id' => $user->getLastInsertId(),
+                    'username' => $username,
+                    'email' => $email,
+                    'image' => $uploadPath,
+                ];
+
+                header('Location:' . APP_URL);
                 exit();
             } else {
                 echo "Erreur lors de l'enregistrement.";
@@ -40,24 +54,41 @@ class AuthController extends Controller
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-           
-            $email = $_POST['email'];
+            $usernameOrEmail = $_POST['username_or_email'];
             $password = $_POST['password'];
 
             $userModel = new User();
-            $user = $userModel->selectUserByEmail($email);
+            $user = $userModel->selectUserByUsernameOrEmail($usernameOrEmail);
 
             if ($user && password_verify($password, $user->password)) {
-                $_SESSION['user'] = $user;
+
+                session_regenerate_id(true);
+
+                $_SESSION['user'] = [
+                    'id' => $user->id,
+                    'username' => $user->username,
+                    'email' => $user->email,
+                    'image' => $user->image,
+                ];
+
+                setcookie('user_id', $user->id, time() + (30 * 24 * 3600), '/');
+                setcookie('username', $user->username, time() + (30 * 24 * 3600), '/');
+                setcookie('email', $user->email, time() + (30 * 24 * 3600), '/');
+
                 header('Location: ' . APP_URL);
                 exit();
             } else {
-                echo "Identifiants invalides.";
+                $_SESSION['flash_message'] = 'Password ou username invalid';
+                $_SESSION['flash_type'] = 'danger';
+                header('Location: ' . APP_URL . 'login');
+                exit();
             }
         } else {
             $this->view('auth.login');
         }
     }
+
+
 
     public function logout()
     {
@@ -66,26 +97,11 @@ class AuthController extends Controller
         exit();
     }
 
-    public function checkUserRole()
+
+
+    private function setFlashMessage($message, $type)
     {
-        if (isset($_SESSION['user'])) {
-
-            $userModel = new User();
-            $userRole = $userModel->getUserRole($_SESSION['user']->id);
-
-            $isAuthor = $userRole === '2';
-            $isAdmin = $userRole === '1';
-
-            if ($isAdmin) {
-                header('Location: ' . APP_URL . 'dashboard');
-                exit();
-            } elseif ($isAuthor) {
-                header('Location: ' . APP_URL . 'home');
-                exit();
-            }
-            return false;
-        }
-
-        return false;
+        $_SESSION['flash_message'] = $message;
+        $_SESSION['flash_type'] = $type;
     }
 }

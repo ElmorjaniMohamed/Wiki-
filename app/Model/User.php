@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Model;
-
-use Database\Connection;
+use App\Model\Wiki;
 use PDO;
 use PDOException;
 
@@ -11,7 +10,7 @@ class User extends Model
     private $username;
     private $email;
     private $password;
-    private $role_id; 
+    private $role_id;
     private $image;
 
 
@@ -92,6 +91,23 @@ class User extends Model
         }
     }
 
+    public function getLastInsertId()
+    {
+        try {
+            $sql = "SELECT LAST_INSERT_ID() as last_id";
+            $this->logQuery($sql);
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_OBJ);
+
+            return $result->last_id;
+        } catch (PDOException $e) {
+            $this->logError($e);
+            return null;
+        }
+    }
+
     public function login($email, $password)
     {
         try {
@@ -115,4 +131,54 @@ class User extends Model
             return null;
         }
     }
+
+    public function userExists($username, $email)
+    {
+        try {
+            $sql = "SELECT COUNT(*) as count FROM user WHERE username = ? OR email = ?";
+            $this->logQuery($sql);
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(1, $username);
+            $stmt->bindParam(2, $email);
+
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_OBJ);
+
+            return $result->count > 0;
+        } catch (PDOException $e) {
+            $this->logError($e);
+            return false;
+        }
+    }
+
+    public function selectUserByUsernameOrEmail($usernameOrEmail)
+    {
+        try {
+            $sql = "SELECT * FROM user WHERE username = :username OR email = :email";
+            $this->logQuery($sql);
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':username', $usernameOrEmail);
+            $stmt->bindParam(':email', $usernameOrEmail);
+
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_OBJ);
+
+            return $user;
+        } catch (PDOException $e) {
+            $this->logError($e);
+            return null;
+        }
+
+    }
+
+    
+
+    private function setFlashMessage($message, $type)
+    {
+        $_SESSION['flash_message'] = $message;
+        $_SESSION['flash_type'] = $type;
+    }
+
 }

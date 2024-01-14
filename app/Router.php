@@ -24,7 +24,7 @@ class Router
     public function abort($code = 404)
     {
         http_response_code($code);
-        require "../Views/error/404.php";
+        require "../Views/error/{$code}.php";
         die();
     }
 

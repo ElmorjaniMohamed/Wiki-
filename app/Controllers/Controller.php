@@ -20,4 +20,6 @@ class Controller
         require VIEWS . 'layout/'.$layout.'.php';
     }
 
+    
+
 }
