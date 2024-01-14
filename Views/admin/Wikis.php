@@ -40,8 +40,8 @@
                                         ?>"><?php echo htmlspecialchars(ucfirst($wiki->status)); ?></span>
                                     </td>
                                     <td>
-                                        <a href="<?= APP_URL . 'wiki/accept/' . $wiki->id; ?>"><span><i class="bi bi-check" style="color: green;"></i></span></a>
-                                        <a href="<?= APP_URL . 'wiki/reject/' . $wiki->id; ?>"><span><i class="bi bi-x" style="color: red;"></i></span></a>
+                                        <a href="<?= APP_URL . 'wiki/accept?id='. $wiki->id?>"><span><i class="bi bi-check" style="color: green;"></i></span></a>
+                                        <a href="<?= APP_URL . 'wiki/reject?id=' . $wiki->id; ?>"><span><i class="bi bi-x" style="color: red;"></i></span></a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

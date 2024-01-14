@@ -5,11 +5,11 @@
     <div class="col-xl-4">
         <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-                <?php if (isset($_SESSION['user']['image'])): ?>
-                    <img src="<?= $_SESSION['user']['image'] ?>" alt="Profile" class="rounded-circle" style="width: 8rem">
+                <?php if (isset($_SESSION['user']->image)): ?>
+                    <img src="<?= $_SESSION['user']->image ?>" alt="Profile" class="rounded-circle" style="width: 8rem">
                 <?php endif; ?>
                 <h2 class="h3 mt-1">
-                    <?= $_SESSION['user']['username'] ?>
+                    <?= $_SESSION['user']->username ?>
                 </h2>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal"
                     data-bs-target="#modalDialogScrollable">
@@ -48,40 +48,45 @@
                     unset($_SESSION['flash_type']);
                 endif;
                 ?>
+
                 <div class="tab-content py-2">
-                    <div class="tab-pane fade show active profile-overview" id="profile-overview">
-
-                        <?php foreach ($data["wikis"] as $wiki): ?>
-                            <div class="card mb-3 shadow border-0 outline-0">
-                                <img class="card-img-top" src="assets/uploads/imageWikis/<?= $wiki->image ?>" alt="Card image cap" />
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        <?= $wiki->title ?>
-                                    </h5>
-                                    <p class="card-text">
-                                        <?= $wiki->content ?>
-                                    </p>
+                    <div class="tab-pane fade show active profile-overview "
+                        id="profile-overview">
+                        <?php if (empty($data["wikis"])): ?>
+                            <p class="text-center">Aucun wiki n'a été ajouté.</p>
+                        <?php else: ?>
+                            <?php foreach ($data["wikis"] as $wiki): ?>
+                                <div class="card mb-3 shadow border-0 outline-0">
+                                    <img class="card-img-top" src="assets/uploads/imageWikis/<?= $wiki->image ?>"
+                                        alt="Card image cap" />
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <?= $wiki->title ?>
+                                        </h5>
+                                        <p class="card-text">
+                                            <?= $wiki->content ?>
+                                        </p>
+                                        <hr>
+                                        <span class="badge badge-<?php
+                                        echo ($wiki->status === 'rejected') ? 'danger' :
+                                            (($wiki->status === 'pending') ? 'warning' : 'success');
+                                        ?>">
+                                            <?php echo htmlspecialchars(ucfirst($wiki->status)); ?>
+                                        </span>
+                                    </div>
                                     <hr>
-                                    <span class="badge badge-<?php
-                                    echo ($wiki->status === 'rejected') ? 'danger' :
-                                        (($wiki->status === 'pending') ? 'warning' : 'success');
-                                    ?>">
-                                        <?php echo htmlspecialchars(ucfirst($wiki->status)); ?>
-                                    </span>
+                                    <div class="card-body">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target="#exampleModalEdit">
+                                            <a href="<?= APP_URL ?>wiki/update?id=<?= $wiki->id ?>"><i class="bi bi-pencil-square"></i> Edit</a>
+                                        </button>
+                                        <button type="button" class="btn btn-danger text-white" >
+                                            <a href="<?= APP_URL ?>wiki/destroy?id=<?= $wiki->id ?>" style="color:aliceblue; text-decoration: none;"><i class="bi bi-trash"></i> Delete</a>
+                                        </button>
+                                    </div>
                                 </div>
-                                <hr>
-                                <div class="card-body">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                                        data-target="#exampleModalEdit">
-                                        <i class="bi bi-pencil-square"></i> Edit
-                                    </button>
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="bi bi-trash"></i> Delete
-                                    </button>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <!-- End Bordered Tabs -->
@@ -155,10 +160,7 @@
 </div>
 
 
-
-
-
-<div class="modal fade" id="exampleModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -169,43 +171,53 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="<?= APP_URL ?>wiki/update" method="post" enctype="multipart/form-data">
 
                     <div class="mb-3">
-                        <label for="fullName" class="col-md-4 col-lg-3 col-form-label p-0 text-dark">Title</label>
-                        <input name="title" type="" class="form-control" id="title" value="" />
+                        <label for="title" class="col-form-label text-dark">Title</label>
+                        <input name="title" type="text" class="form-control" id="title" value="<?= $wiki->title?>" required />
                     </div>
 
                     <div class="mb-3">
-                        <label for="about" class="col-md-4 col-lg-3 col-form-label p-0 text-dark">Content</label>
+                        <label for="content" class="col-form-label text-dark">Content</label>
                         <div>
-                            <textarea id="tiny" name="content" class="form-control"></textarea>
+                            <textarea id="tiny" name="content" class="form-control" value="<?= $wiki->content?>" required></textarea>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="image" class="col-md-4 col-lg-3 col-form-label p-0 text-dark">Image</label>
-                        <input name="image" type="file" class="form-control" id="image" value="" />
+                        <label for="image" class="col-form-label text-dark">Image</label>
+                        <input name="image" type="file" class="form-control" id="image" accept="image/*" />
                     </div>
 
                     <div class="mb-3">
-                        <label for="category" class="col-md-4 col-lg-3 col-form-label p-0 text-dark">Category</label>
-                        <select name="category" class="form-control" id="category" value="">
-                            <option selected disabled>select Category</option>
+                        <label for="category" class="col-form-label text-dark">Category</label>
+                        <select name="category_id" class="form-control" id="category" required>
+                            <option value="" disabled selected>Select Category</option>
+                            <?php foreach ($data["category"] as $category): ?>
+                                <option value="<?= $category->id ?>">
+                                    <?= $category->name ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
 
                     <div class="mb-3">
-                        <label for="category" class="col-md-4 col-lg-3 col-form-label p-0 text-dark">Tags</label>
-                        <select name="tag" class="form-control" id="category" value="">
-                            <option selected disabled>select Tags</option>
+                        <label for="tag" id="" class="col-form-label text-dark">Tags</label>
+                        <select name="tags[]" class="form-control select2" multiple="multiple" style="width: 100%;">
+                            <?php foreach ($data["tag"] as $tag): ?>
+                                <option value="<?= $tag->id ?>">
+                                    <?= $tag->name ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>

@@ -13,7 +13,6 @@ class AuthController extends Controller
             $email = $_POST['email'];
             $password = $_POST['password'];
 
-            // Check if the user already exists
             $userModel = new User();
             if ($userModel->userExists($username, $email)) {
                 $this->setFlashMessage('User already exists.', 'danger');
@@ -61,24 +60,38 @@ class AuthController extends Controller
             $user = $userModel->selectUserByUsernameOrEmail($usernameOrEmail);
 
             if ($user && password_verify($password, $user->password)) {
+                if ($user->role_id == 1) {
+                    session_regenerate_id(true);
+                    $_SESSION['user'] = (object) [
+                        'id' => $user->id,
+                        'username' => $user->username,
+                        'email' => $user->email,
+                        'image' => $user->image,
+                        'role_id' => $user->role_id,
+                    ];
+                    
 
-                session_regenerate_id(true);
-
-                $_SESSION['user'] = [
-                    'id' => $user->id,
-                    'username' => $user->username,
-                    'email' => $user->email,
-                    'image' => $user->image,
-                ];
-
-                setcookie('user_id', $user->id, time() + (30 * 24 * 3600), '/');
-                setcookie('username', $user->username, time() + (30 * 24 * 3600), '/');
-                setcookie('email', $user->email, time() + (30 * 24 * 3600), '/');
-
-                header('Location: ' . APP_URL);
-                exit();
+                    header('Location: ' . APP_URL . 'admin/Wikis');
+                    exit();
+                } elseif ($user->role_id == 2) {
+                    session_regenerate_id(true);
+                    $_SESSION['user'] = (object) [
+                        'id' => $user->id,
+                        'username' => $user->username,
+                        'email' => $user->email,
+                        'image' => $user->image,
+                        'role_id' => $user->role_id,
+                    ];
+                    header('Location: ' . APP_URL);
+                    exit();
+                } else {
+                    $_SESSION['flash_message'] = 'You do not have permission to access the admin dashboard.';
+                    $_SESSION['flash_type'] = 'danger';
+                    header('Location: ' . APP_URL . 'login');
+                    exit();
+                }
             } else {
-                $_SESSION['flash_message'] = 'Password ou username invalid';
+                $_SESSION['flash_message'] = 'Invalid password or username';
                 $_SESSION['flash_type'] = 'danger';
                 header('Location: ' . APP_URL . 'login');
                 exit();

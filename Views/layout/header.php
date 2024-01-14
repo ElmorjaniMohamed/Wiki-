@@ -56,21 +56,21 @@
 
           <li class="nav-item dropdown pe-3 list-inline">
             <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-              <?php if (isset($_SESSION['user']['image'])): ?>
-                <img src="<?= $_SESSION['user']['image'] ?>" alt="Profile" class="rounded-circle" style="width: 3rem">
+              <?php if (isset($_SESSION['user']->image)): ?>
+                <img src="<?= $_SESSION['user']->image ?>" alt="Profile" class="rounded-circle" style="width: 3rem">
               <?php endif; ?>
               <span class="d-none d-md-block dropdown-toggle ps-2 fw-bold ml-2" style="font-weight: 700;">
-                <?= $_SESSION['user']['username'] ?>
+                <?= $_SESSION['user']->username ?>
               </span>
             </a>
 
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
               <li class="dropdown-header text-center">
                 <h6>
-                  <?= $_SESSION['user']['username'] ?>
+                  <?= $_SESSION['user']->username ?>
                 </h6>
                 <span>
-                  <?= $_SESSION['user']['email'] ?>
+                  <?= $_SESSION['user']->email ?>
                 </span>
               </li>
               <li>

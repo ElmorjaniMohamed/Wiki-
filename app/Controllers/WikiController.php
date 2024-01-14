@@ -34,7 +34,7 @@ class WikiController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tags = $_POST["tags"];
-            $_POST['user_id'] = $_SESSION['user']['id'];
+            $_POST['user_id'] = $_SESSION['user']->id;
             $_POST['image'] = $_FILES['image']['name'];
             unset($_POST["tags"]);
 
@@ -64,6 +64,37 @@ class WikiController extends Controller
         }
     }
 
+    
+    public function update()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $wikiId = $_POST['wiki_id'];
+
+            $data = [
+                'title' => $_POST['title'],
+                'content' => $_POST['content'],
+                'category_id' => $_POST['category_id']
+            ];
+
+            $this->wikiModel->updateWiki($data, $wikiId);
+
+            $tags = isset($_POST['tags']) ? $_POST['tags'] : [];
+            $this->wikiModel->updateWikiTags($wikiId, $tags);
+
+            header('Location: ' . APP_URL . 'profile');
+            exit();
+        } else {
+            $wikiId = $_GET['id'];
+            $wiki = $this->wikiModel->getWikiById($wikiId);
+            $categories = $this->categoryModel->getAllCategories();
+            $tags = $this->tagModel->getAllTags();
+            $wikiTags = $this->wikiModel->getWikiTags($wikiId);
+
+            $this->view('wikis.update', ["wiki" => $wiki, "categories" => $categories, "tags" => $tags, "wikiTags" => $wikiTags]);
+        }
+    }
+
+
     public function destroy()
     {
         if (isset($_GET['id'])) {
@@ -80,7 +111,8 @@ class WikiController extends Controller
 
     private function validateUserIsAdmin()
     {
-        if (!isset($_SESSION['user']) || !$this->isAdmin($_SESSION['user']['id'])) {
+        if (!isset($_SESSION['user']) || !$this->isAdmin($_SESSION['user']->id)) {
+
             $this->setFlashMessage('You do not have permission to perform this action.', 'danger');
             header('Location: ' . APP_URL);
             exit();
@@ -92,12 +124,16 @@ class WikiController extends Controller
         $userModel = new User();
         $role = $userModel->getUserRole($userId);
 
-        return ($role && $role['role_id'] == 1);
+        if ($role == 1) {
+            return $role;
+        }
+
     }
 
 
     public function accept()
     {
+
         $this->validateUserIsAdmin();
         $wikiId = isset($_GET['id']) ? $_GET['id'] : null;
 
@@ -105,21 +141,22 @@ class WikiController extends Controller
             $this->setFlashMessage('Invalid request. Wiki ID is missing.', 'danger');
             header('Location: ' . APP_URL . 'admin/Wikis');
             exit();
+        } else {
+
+            try {
+                $this->wikiModel->updateWikiStatus($wikiId, 'success');
+                $this->setFlashMessage('Wiki accepted successfully!', 'success');
+            } catch (\Exception $e) {
+                $this->setFlashMessage('Error accepting wiki.', 'danger');
+            }
+            header('Location: ' . APP_URL . 'admin/Wikis');
+            exit();
         }
 
-        try {
-            $this->wikiModel->updateWikiStatus($wikiId, 'success');
-            $this->setFlashMessage('Wiki accepted successfully!', 'success');
-        } catch (\Exception $e) {
-            $this->setFlashMessage('Error accepting wiki.', 'danger');
-        }
-
-        header('Location: ' . APP_URL . 'admin/Wikis');
-        exit();
     }
 
 
-    public function reject($wikiId)
+    public function reject()
     {
         $this->validateUserIsAdmin();
         $wikiId = isset($_GET['id']) ? $_GET['id'] : null;
@@ -128,16 +165,19 @@ class WikiController extends Controller
             $this->setFlashMessage('Invalid request. Wiki ID is missing.', 'danger');
             header('Location: ' . APP_URL . 'admin/Wikis');
             exit();
+        } else {
+
+            try {
+                $this->wikiModel->updateWikiStatus($wikiId, 'rejected');
+                $this->setFlashMessage('Wiki rejected successfully!', 'success');
+            } catch (\Exception) {
+                $this->setFlashMessage('Error rejecting wiki.', 'danger');
+            }
+            header('Location: ' . APP_URL . 'admin/Wikis');
+            exit();
+
         }
 
-        try {
-            $this->wikiModel->updateWikiStatus($wikiId, 'rejected');
-            $this->setFlashMessage('Wiki rejected successfully!', 'success');
-        } catch (\Exception) {
-            $this->setFlashMessage('Error rejecting wiki.', 'danger');
-        }
-        header('Location: ' . APP_URL . 'admin/Wikis');
-        exit();
     }
 
     private function setFlashMessage($message, $type)

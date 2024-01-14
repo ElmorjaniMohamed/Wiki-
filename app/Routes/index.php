@@ -66,5 +66,6 @@ $router->get('/WikiGenius/wiki/edit', WikiController::class, 'edit');
 $router->post('/WikiGenius/wiki/update', WikiController::class, 'update');
 $router->get('/WikiGenius/wiki/accept', WikiController::class, 'accept');
 $router->get('/WikiGenius/wiki/reject', WikiController::class, 'reject');
+$router->get('/WikiGenius/wiki/destroy', WikiController::class, 'destroy');
 
 $router->dispatch();

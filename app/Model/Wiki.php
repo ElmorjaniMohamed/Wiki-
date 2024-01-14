@@ -3,7 +3,7 @@
 namespace App\Model;
 
 use PDOException;
-
+use PDO;
 class Wiki extends Model
 {
     
@@ -23,13 +23,8 @@ class Wiki extends Model
         return $this->selectRecords('wikis', '*', $where)[0] ?? null;
     }
 
-    public function updateWiki($id, $title, $content, $status)
+    public function updateWiki(array $data, int $id)
     {
-        $data = [
-            'title' => $title,
-            'content' => $content,
-            'status' => $status,
-        ];
 
         $this->updateRecord('wikis', $data, $id);
     }
@@ -53,6 +48,52 @@ class Wiki extends Model
             throw new \Exception('Error updating wiki status.');
         }
     }
+
+    public function getWikiTags($wikiId)
+    {
+        $sql = "SELECT * FROM wiki_tags WHERE wiki_id = :wiki_id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':wiki_id', $wikiId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function getUserWikis($userId) {
+        $sql = "SELECT * FROM wikis WHERE user_id = :user_id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function updateWikiTags($wikiId, $tags)
+    {
+        $this->deleteWikiTags($wikiId);
+
+        foreach ($tags as $tagId) {
+            $this->createWikiTag($wikiId, $tagId);
+        }
+    }
+
+    private function deleteWikiTags($wikiId)
+    {
+        $sql = "DELETE FROM wiki_tags WHERE wiki_id = :wiki_id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':wiki_id', $wikiId, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    private function createWikiTag($wikiId, $tagId)
+    {
+        $sql = "INSERT INTO wiki_tags (wiki_id, tag_id) VALUES (:wiki_id, :tag_id)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':wiki_id', $wikiId, PDO::PARAM_INT);
+        $stmt->bindValue(':tag_id', $tagId, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+    
+    
 
     
 
