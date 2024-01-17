@@ -1,3 +1,7 @@
+<?php if ($_SESSION['user']->role_id != 1) {
+    header('Location: ' . APP_URL);
+}?>
+
 <?php if (isset($_SESSION['flash_message']) && isset($_SESSION['flash_type'])): ?>
     <div class="alert alert-<?php echo $_SESSION['flash_type']; ?> alert-dismissible fade show" role="alert">
         <strong>

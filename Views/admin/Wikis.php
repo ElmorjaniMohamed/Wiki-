@@ -1,3 +1,6 @@
+<?php if ($_SESSION['user']->role_id != 1) {
+    header('Location: ' . APP_URL);
+}?>
 <div class="pagetitle">
     <h1>Dashboard</h1>
     <nav>
@@ -30,9 +33,9 @@
                         <tbody>
                             <?php foreach ($data as $wiki): ?>
                                 <tr>
-                                    <td><img src="<?= APP_URL . 'assets/uploads/imageWikis/' . $wiki->image ?>" alt="<?= $wiki->title ?>" style="max-width: 50px; max-height: 50px;"></td>
+                                    <td><img src="<?= APP_URL . 'assets/uploads/imageWikis/' . $wiki->image ?>" alt="<?= $wiki->title ?>" style="width: 50px; height: 35px;"></td>
                                     <td><?= $wiki->title ?></td>
-                                    <td><?= $wiki->content ?></td>
+                                    <td class="text-truncate"><?= substr($wiki->content, 0, 20) . '...'; ?></td>
                                     <td>
                                         <span class="badge bg-<?=
                                             ($wiki->status === 'rejected') ? 'danger' :

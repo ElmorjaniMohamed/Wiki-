@@ -50,20 +50,19 @@
                 ?>
 
                 <div class="tab-content py-2">
-                    <div class="tab-pane fade show active profile-overview "
-                        id="profile-overview">
+                    <div class="tab-pane fade show active profile-overview row pb-3 justify-content-center align-items-center" id="profile-overview">
                         <?php if (empty($data["wikis"])): ?>
                             <p class="text-center">Aucun wiki n'a été ajouté.</p>
                         <?php else: ?>
-                            <?php foreach ($data["wikis"] as $wiki): ?>
+                            <?php foreach ($data["wikis"] as $wiki): ?>   
                                 <div class="card mb-3 shadow border-0 outline-0">
                                     <img class="card-img-top" src="assets/uploads/imageWikis/<?= $wiki->image ?>"
-                                        alt="Card image cap" />
+                                        alt="Card image cap" style="width: 100%; height: 28rem;"/>
                                     <div class="card-body">
                                         <h5 class="card-title">
                                             <?= $wiki->title ?>
                                         </h5>
-                                        <p class="card-text">
+                                        <p class="card-text text-truncate">
                                             <?= $wiki->content ?>
                                         </p>
                                         <hr>
@@ -77,19 +76,94 @@
                                     <hr>
                                     <div class="card-body">
                                         <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#exampleModalEdit">
-                                            <a href="<?= APP_URL ?>wiki/update?id=<?= $wiki->id ?>"><i class="bi bi-pencil-square"></i> Edit</a>
+                                            data-target="#exampleModalEdit<?= $wiki->id ?>">
+                                            <i class="bi bi-pencil-square"></i> Edit
                                         </button>
-                                        <button type="button" class="btn btn-danger text-white" >
-                                            <a href="<?= APP_URL ?>wiki/destroy?id=<?= $wiki->id ?>" style="color:aliceblue; text-decoration: none;"><i class="bi bi-trash"></i> Delete</a>
+                                        <button type="button" class="btn btn-danger text-white">
+                                            <a href="<?= APP_URL ?>wiki/destroy?id=<?= $wiki->id ?>"
+                                                style="color:aliceblue; text-decoration: none;"><i class="bi bi-trash"></i>
+                                                Delete</a>
                                         </button>
                                     </div>
+
+                                    <!-- modal Edit -->
+                                    <div class="modal fade" id="exampleModalEdit<?= $wiki->id ?>" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Edit Wiki</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="<?= APP_URL ?>wiki/update" method="post"
+                                                        enctype="multipart/form-data">
+                                                        <input type="hidden" name="id" value="<?= $wiki->id ?>">
+                                                        <div class="mb-3">
+                                                            <label for="title" class="col-form-label text-dark">Title</label>
+                                                            <input name="title" type="text" class="form-control" id="title"
+                                                                value="<?= $wiki->title ?>" required />
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="content"
+                                                                class="col-form-label text-dark">Content</label>
+                                                            <div>
+                                                                <textarea id="tiny" name="content" class="form-control"
+                                                                    required><?= $wiki->content ?></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="image" class="col-form-label text-dark">Image</label>
+                                                            <input name="image" type="file" class="form-control" id="image"
+                                                                accept="image/*" />
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="category"
+                                                                class="col-form-label text-dark">Category</label>
+                                                            <select name="category_id" class="form-control" id="category"
+                                                                required>
+                                                                <?php foreach ($data["category"] as $category): ?>
+                                                                    <option value="<?= $category->id ?>">
+                                                                        <?= $category->name ?>
+                                                                    </option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="tag" id="" class="col-form-label text-dark">Tags</label>
+                                                            <select name="tags[]" class="form-control select2"
+                                                                multiple="multiple" style="width: 100%;">
+                                                                <?php foreach ($data["tag"] as $tag): ?>
+                                                                    <option value="<?= $tag->id ?>">
+                                                                        <?= $tag->name ?>
+                                                                    </option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+
                             <?php endforeach; ?>
                         <?php endif; ?>
+                        
                     </div>
                 </div>
-                <!-- End Bordered Tabs -->
             </div>
         </div>
     </div>
@@ -118,70 +192,6 @@
                         <label for="content" class="col-form-label text-dark">Content</label>
                         <div>
                             <textarea id="tiny" name="content" class="form-control" required></textarea>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="image" class="col-form-label text-dark">Image</label>
-                        <input name="image" type="file" class="form-control" id="image" accept="image/*" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="category" class="col-form-label text-dark">Category</label>
-                        <select name="category_id" class="form-control" id="category" required>
-                            <option value="" disabled selected>Select Category</option>
-                            <?php foreach ($data["category"] as $category): ?>
-                                <option value="<?= $category->id ?>">
-                                    <?= $category->name ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="tag" id="" class="col-form-label text-dark">Tags</label>
-                        <select name="tags[]" class="form-control select2" multiple="multiple" style="width: 100%;">
-                            <?php foreach ($data["tag"] as $tag): ?>
-                                <option value="<?= $tag->id ?>">
-                                    <?= $tag->name ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Wiki</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="<?= APP_URL ?>wiki/update" method="post" enctype="multipart/form-data">
-
-                    <div class="mb-3">
-                        <label for="title" class="col-form-label text-dark">Title</label>
-                        <input name="title" type="text" class="form-control" id="title" value="<?= $wiki->title?>" required />
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="content" class="col-form-label text-dark">Content</label>
-                        <div>
-                            <textarea id="tiny" name="content" class="form-control" value="<?= $wiki->content?>" required></textarea>
                         </div>
                     </div>
 

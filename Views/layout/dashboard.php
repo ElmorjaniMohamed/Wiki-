@@ -13,6 +13,13 @@
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link
@@ -26,7 +33,9 @@
 
   <!-- Template Main CSS File -->
   <link href="<?= APP_URL ?>public/assets/css/dashboard.css" rel="stylesheet">
-  <link rel="stylesheet" href="<?= APP_URL ?>public/assets/css/style.css">
+  <link href="<?= APP_URL ?>public/assets/css/style.css" rel="stylesheet">
+
+
 
 </head>
 
@@ -36,9 +45,9 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
-        <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
+    <a href="" class="navbar-brand font-weight-bold text-secondary" style="font-size: 36px">
+        <i class="fa-solid fa-book-open-reader"></i>
+        <span class="text-primary ">WikiGenius</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -61,14 +70,17 @@
 
         <li class="nav-item dropdown pe-3">
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            
+            <?php if (isset($_SESSION['user']->image)): ?>
+                <img src="<?= $_SESSION['user']->image ?>" alt="Profile" class="rounded-circle" style="width: 3rem">
+              <?php endif; ?>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><?= $_SESSION['user']->username ?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Mohamed El Morjani</h6>
-              <span>info@gmail.com</span>
+              <h6><?= $_SESSION['user']->username ?></h6>
+              <span><?= $_SESSION['user']->email ?></span>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -93,7 +105,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="<?= APP_URL ?>logout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -113,25 +125,25 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="index.html">
+        <a class="nav-link collapsed" href="<?= APP_URL ?>admin/index">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
       <li class="nav-item">
-        <a class="nav-link " href="<?= APP_URL ?>admin/Wikis">
+        <a class="nav-link collapsed" href="<?= APP_URL ?>admin/Wikis">
           <i class="bi bi-journal-richtext"></i>
           <span>Wikis</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link " href="<?= APP_URL ?>admin/Categories">
+        <a class="nav-link collapsed" href="<?= APP_URL ?>admin/Categories">
           <i class="bi bi-bookmark"></i>
           <span>Categories</span>
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link " href="<?= APP_URL ?>admin/Tags">
+      <li class="nav-item ">
+        <a class="nav-link collapsed" href="<?= APP_URL ?>admin/Tags">
           <i class="bi bi-tags"></i>
           <span>Tags</span>
         </a>

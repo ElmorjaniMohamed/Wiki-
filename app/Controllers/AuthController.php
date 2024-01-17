@@ -60,8 +60,11 @@ class AuthController extends Controller
             $user = $userModel->selectUserByUsernameOrEmail($usernameOrEmail);
 
             if ($user && password_verify($password, $user->password)) {
+                
                 if ($user->role_id == 1) {
+
                     session_regenerate_id(true);
+
                     $_SESSION['user'] = (object) [
                         'id' => $user->id,
                         'username' => $user->username,
@@ -69,12 +72,13 @@ class AuthController extends Controller
                         'image' => $user->image,
                         'role_id' => $user->role_id,
                     ];
-                    
 
-                    header('Location: ' . APP_URL . 'admin/Wikis');
+                    header('Location: ' . APP_URL . 'admin/index');
                     exit();
                 } elseif ($user->role_id == 2) {
+
                     session_regenerate_id(true);
+
                     $_SESSION['user'] = (object) [
                         'id' => $user->id,
                         'username' => $user->username,
@@ -101,16 +105,12 @@ class AuthController extends Controller
         }
     }
 
-
-
     public function logout()
     {
         session_destroy();
         header('Location: ' . APP_URL);
         exit();
     }
-
-
 
     private function setFlashMessage($message, $type)
     {

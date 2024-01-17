@@ -105,23 +105,9 @@ CREATE TABLE `wiki` (
   `category_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
 
---
--- Table structure for table `wiki_tag`
---
 
 CREATE TABLE `wiki_tag` (
   `tag_id` int DEFAULT NULL,
   `wiki_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `category`
---
-
---

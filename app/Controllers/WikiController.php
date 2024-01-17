@@ -64,11 +64,11 @@ class WikiController extends Controller
         }
     }
 
-    
+
     public function update()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $wikiId = $_POST['wiki_id'];
+            $wikiId = $_POST['id'];
 
             $data = [
                 'title' => $_POST['title'],
@@ -93,6 +93,25 @@ class WikiController extends Controller
             $this->view('wikis.update', ["wiki" => $wiki, "categories" => $categories, "tags" => $tags, "wikiTags" => $wikiTags]);
         }
     }
+
+    public function edit()
+    {
+        if (isset($_GET['id'])) {
+            $wikiId = $_GET['id'];
+            $wiki = $this->wikiModel->getWikiById($wikiId);
+            $categories = $this->categoryModel->getAllCategories();
+            $tags = $this->tagModel->getAllTags();
+            $wikiTags = $this->wikiModel->getWikiTags($wikiId);
+
+            $this->view('wikis.edit', ["wiki" => $wiki, "categories" => $categories, "tags" => $tags, "wikiTags" => $wikiTags]);
+        } else {
+            $this->setFlashMessage('Invalid request. Wiki ID is missing.', 'danger');
+            header('Location: ' . APP_URL . 'profile'); 
+            exit();
+        }
+    }
+
+
 
 
     public function destroy()

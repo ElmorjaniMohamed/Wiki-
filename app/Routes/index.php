@@ -9,6 +9,8 @@ use App\Controllers\LoginController;
 use App\Controllers\SignUpController;
 use App\Controllers\ContactController;
 use App\Controllers\ProfileController;
+use App\Controllers\SearchController;
+use App\Controllers\StatisticController;
 use App\Controllers\TagController;
 use App\Router;
 
@@ -17,8 +19,14 @@ $router = new Router();
 // Home page
 $router->get('/WikiGenius/', HomeController::class, 'index');
 
-// About page
+// wikiAdmin page
 $router->get('/WikiGenius/wiki', HomeController::class, 'wiki');
+
+// search
+$router->get('/WikiGenius/Search', SearchController::class, 'search');
+
+// wikiDetails
+$router->get('/WikiGenius/wikiDetail', HomeController::class, 'wikiDetail');
 
 // About page
 $router->get('/WikiGenius/about', AboutController::class, 'index');
@@ -67,5 +75,8 @@ $router->post('/WikiGenius/wiki/update', WikiController::class, 'update');
 $router->get('/WikiGenius/wiki/accept', WikiController::class, 'accept');
 $router->get('/WikiGenius/wiki/reject', WikiController::class, 'reject');
 $router->get('/WikiGenius/wiki/destroy', WikiController::class, 'destroy');
+
+// Statistic
+$router->get('/WikiGenius/admin/index', StatisticController::class, 'index');
 
 $router->dispatch();

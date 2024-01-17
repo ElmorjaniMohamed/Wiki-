@@ -8,7 +8,7 @@ class Tag extends Model
     {
         return $this->selectRecords('tags');
     }
-
+    
     public function getTagById($tagId)
     {
         return $this->selectRecords('tags', '*', "id = $tagId")[0] ?? null;
@@ -42,4 +42,6 @@ class Tag extends Model
     {
         return $this->deleteRecord('tags', $tagId);
     }
+
+    
 }

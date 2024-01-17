@@ -181,4 +181,21 @@ class User extends Model
         $_SESSION['flash_type'] = $type;
     }
 
+    public function getAllUsers()
+    {
+        try {
+            $query = "
+                SELECT * FROM user
+            ";
+
+            $statement = $this->pdo->prepare($query);
+            $statement->execute();
+
+            return $statement->fetchAll(PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            $this->logError($e);
+            throw new \Exception('Error fetching users.');
+        }
+    }
+
 }

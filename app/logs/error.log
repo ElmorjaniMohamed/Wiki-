@@ -25,3 +25,17 @@
 [2024-01-13 23:04:44] SQLSTATE[HY000]: General error: 1364 Field 'image' doesn't have a default value
 [2024-01-13 23:05:04] SQLSTATE[HY000]: General error: 1364 Field 'image' doesn't have a default value
 [2024-01-13 23:07:11] SQLSTATE[HY000]: General error: 1364 Field 'image' doesn't have a default value
+[2024-01-16 11:09:44] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%test%' at line 1
+[2024-01-16 11:10:01] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%test%' at line 1
+[2024-01-16 11:10:01] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%test%' at line 1
+[2024-01-16 11:10:02] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%test%' at line 1
+[2024-01-16 11:10:02] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%test%' at line 1
+[2024-01-16 11:13:27] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%test%' at line 1
+[2024-01-16 11:13:28] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%test%' at line 1
+[2024-01-16 11:13:46] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%a%' at line 1
+[2024-01-16 11:13:52] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%a%' at line 1
+[2024-01-16 11:13:54] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%a%' at line 1
+[2024-01-16 11:14:04] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%e%' at line 1
+[2024-01-16 11:16:44] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%e%' at line 1
+[2024-01-16 11:16:49] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%a%' at line 1
+[2024-01-16 11:17:03] SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%a%' at line 1
